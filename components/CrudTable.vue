@@ -74,7 +74,7 @@ export default {
         },
         async fetchData() {
             try {
-                const { data } = await useFetch(`http://localhost:8080/api/books/?page=${this.currentPage}`);
+                const { data } = await useFetch(`https://demo-backend-w1oh.onrender.com/api/books/?page=${this.currentPage}`);
                 this.items = data;
             } catch (error) {
                 console.error(error);
@@ -82,7 +82,7 @@ export default {
         },
         async fetchDataAll() {
             try {
-                const { data } = await useFetch(`http://localhost:8080/api/books/`);
+                const { data } = await useFetch(`https://demo-backend-w1oh.onrender.com/api/books/`);
                 this.items = data;
                 console.log(Math.ceil(this.items.length / this.itemsPerPage));
             } catch (error) {
@@ -96,7 +96,7 @@ export default {
             const deleteConfirmed = window.confirm('Are you sure you want to delete?');
             if (deleteConfirmed) {
                 try {
-                    await useFetch(`http://localhost:8080/api/books/delete/${id}`);
+                    await useFetch(`https://demo-backend-w1oh.onrender.com/api/books/delete/${id}`);
                     this.fetchData(this.currentPage, this.itemsPerPage);
                 } catch (error) {
                     console.error(error);
@@ -105,7 +105,7 @@ export default {
         },
         async searchItems() {
             try {
-                const { data } = await useFetch(`http://localhost:8080/api/books/?search=${this.searchTerm}`);
+                const { data } = await useFetch(`https://demo-backend-w1oh.onrender.com/api/books/?search=${this.searchTerm}`);
                 this.items = data;
                 this.paginatedItems();
             } catch (error) {

@@ -43,7 +43,7 @@ export default {
         // ไม่ส่งคำขอไปยัง API เนื่องจากข้อมูลไม่ครบถ้วน
       } else {
         this.errorChecked=false;
-        axios.post(`http://localhost:8080/api/books/create`, this.createdItem)
+        axios.post(`https://demo-backend-w1oh.onrender.com/api/books/create`, this.createdItem)
           .then(response => {
             this.$router.push('/books');
           })

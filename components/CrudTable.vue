@@ -84,9 +84,7 @@ export default {
             try {
                 const { data } = await useFetch(`https://demo-backend-w1oh.onrender.com/api/books/`);
                 this.items = data;
-                console.log(Math.ceil(this.items.length / this.itemsPerPage));
             } catch (error) {
-                console.error(error);
             }
         },
         editItem(id) {
@@ -99,7 +97,6 @@ export default {
                     await useFetch(`https://demo-backend-w1oh.onrender.com/api/books/delete/${id}`);
                     this.fetchData(this.currentPage, this.itemsPerPage);
                 } catch (error) {
-                    console.error(error);
                 }
             }
         },
@@ -109,7 +106,6 @@ export default {
                 this.items = data;
                 this.paginatedItems();
             } catch (error) {
-                console.error(error);
             }
         },
         // Other methods for adding, editing, or deleting items

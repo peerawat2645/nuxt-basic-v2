@@ -45,13 +45,11 @@ export default {
           this.editedItem.id = response.data.id;
         })
         .catch(error => {
-          console.error('Error fetching book details:', error);
         });
     },
     updateItem() {
       if (!this.editedItem.name || !this.editedItem.description) {
         this.errorChecked = true;
-        console.error('Please fill in all fields');
       } else {
         this.errorChecked = false;
         axios.post(`https://demo-backend-w1oh.onrender.com/api/books/update`, this.editedItem)
@@ -59,7 +57,6 @@ export default {
             this.$router.push('/books');
           })
           .catch(error => {
-            console.error('Error updating book:', error);
           });
       }
     }

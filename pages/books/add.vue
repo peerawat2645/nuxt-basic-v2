@@ -39,8 +39,6 @@ export default {
     createItem() {
       if (!this.createdItem.name || !this.createdItem.description) {
         this.errorChecked=true;
-        console.error('Please fill in all fields');
-        // ไม่ส่งคำขอไปยัง API เนื่องจากข้อมูลไม่ครบถ้วน
       } else {
         this.errorChecked=false;
         axios.post(`https://demo-backend-w1oh.onrender.com/api/books/create`, this.createdItem)
@@ -48,7 +46,6 @@ export default {
             this.$router.push('/books');
           })
           .catch(error => {
-            console.error('Error updating book:', error);
           });
       }
     }

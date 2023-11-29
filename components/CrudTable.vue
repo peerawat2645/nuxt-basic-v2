@@ -23,7 +23,7 @@
           <td>
             <!-- Edit and Delete buttons -->
             <nuxt-link :to="`/books/${item.id}`" class="custom-link">Edit</nuxt-link>
-            <button @click="deleteItem(item.id)" class="delete-link">Delete</button>
+            <button @click="deleteItem(item.id)" class="delete-link" :disabled="isButtonDisabled">Delete</button>
           </td>
         </tr>
       </tbody>
@@ -48,6 +48,7 @@ export default {
             itemsPerPage: 5,
             searchTerm: '',
             loading: false,
+            isButtonDisabled: false,
         };
     },
     computed: {
@@ -67,23 +68,11 @@ export default {
         nextPage() {
             if (this.currentPage < this.totalPages) {
                 this.currentPage++;
-                this.fetchData();
             }
         },
         prevPage() {
             if (this.currentPage > 1) {
                 this.currentPage--;
-                this.fetchData();
-            }
-        },
-        async fetchData() {
-            try {
-                this.loading = true;
-                const { data } = await useFetch(`https://demo-backend-w1oh.onrender.com/api/books/?page=${this.currentPage}`);
-                this.items = data;
-                this.loading = false;
-            } catch (error) {
-                this.loading = false;
             }
         },
 
@@ -104,8 +93,9 @@ export default {
             const deleteConfirmed = window.confirm('Are you sure you want to delete?');
             if (deleteConfirmed) {
                 try {
+                    this.isButtonDisabled = true;
                     await useFetch(`https://demo-backend-w1oh.onrender.com/api/books/delete/${id}`);
-                    this.fetchData(this.currentPage, this.itemsPerPage);
+                    this.fetchDataAll();
                 } catch (error) {
                 }
             }

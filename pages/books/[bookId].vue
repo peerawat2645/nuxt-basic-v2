@@ -13,7 +13,7 @@
         <span v-if="errorChecked && !editedItem.description" class="error-message">Please enter a description</span>
       </div>
       <div class="form-group">
-        <button type="submit">Update</button>
+        <button type="submit" :disabled="isButtonDisabled">Update</button>
         <NuxtLink to="/books" class="cancel-link">Cancel</NuxtLink>
       </div>
     </form>
@@ -28,7 +28,8 @@ export default {
       editedItem: {
         id: null,
         name: '',
-        description: ''
+        description: '',
+        isButtonDisabled: false,
       },
       errorChecked:false
     };
@@ -52,6 +53,7 @@ export default {
         this.errorChecked = true;
       } else {
         this.errorChecked = false;
+        this.isButtonDisabled = true;
         axios.post(`https://demo-backend-w1oh.onrender.com/api/books/update`, this.editedItem)
           .then(response => {
             this.$router.push('/books');

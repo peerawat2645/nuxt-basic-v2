@@ -76,16 +76,16 @@ export default {
                 this.fetchData();
             }
         },
-        // async fetchData() {
-        //     try {
-        //         this.loading = true;
-        //         const { data } = await useFetch(`https://demo-backend-w1oh.onrender.com/api/books/?page=${this.currentPage}`);
-        //         this.items = data;
-        //         this.loading = false;
-        //     } catch (error) {
-        //         this.loading = false;
-        //     }
-        // },
+        async fetchData() {
+            try {
+                this.loading = true;
+                const { data } = await useFetch(`https://demo-backend-w1oh.onrender.com/api/books/?page=${this.currentPage}`);
+                this.items = data;
+                this.loading = false;
+            } catch (error) {
+                this.loading = false;
+            }
+        },
 
         async fetchDataAll() {
             try {
@@ -112,7 +112,7 @@ export default {
         },
         async searchItems() {
             try {
-                const { data } = await useFetch(`https://demo-backend-w1oh.onrender.com/api/books/page/?search=${this.searchTerm}`);
+                const { data } = await useFetch(`https://demo-backend-w1oh.onrender.com/api/books/?search=${this.searchTerm}`);
                 this.items = data;
                 this.paginatedItems();
             } catch (error) {
@@ -224,7 +224,6 @@ button:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 10px;
 }
 
 .loader {

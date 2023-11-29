@@ -28,6 +28,9 @@
         </tr>
       </tbody>
       </table>
+      <div v-if="loading" class="loader-container">
+        <span class="loader"></span>
+    </div>
       <div class="pagination">
       <button @click="prevPage" :disabled="currentPage === 1">Previous</button>
       <span style="font-size: 16px;margin-right: 10px;">Page {{ currentPage }}</span>
@@ -43,7 +46,8 @@ export default {
             items: [], // Your list of items
             currentPage: 1,
             itemsPerPage: 5,
-            searchTerm: ''
+            searchTerm: '',
+            loading: false,
         };
     },
     computed: {
@@ -74,17 +78,23 @@ export default {
         },
         async fetchData() {
             try {
-                const { data } = await useFetch(`https://demo-backend-w1oh.onrender.com/api/books/?page=${this.currentPage}`);
+                this.loading = true;
+                const { data } = await useFetch(`https://demo-backend-w1oh.onrender.com/api/books/page/${this.currentPage}`);
                 this.items = data;
+                this.loading = false;
             } catch (error) {
-                console.error(error);
+                this.loading = false;
             }
         },
+
         async fetchDataAll() {
             try {
+                this.loading = true;
                 const { data } = await useFetch(`https://demo-backend-w1oh.onrender.com/api/books/`);
                 this.items = data;
+                this.loading = false;
             } catch (error) {
+                this.loading = false;
             }
         },
         editItem(id) {
@@ -102,7 +112,7 @@ export default {
         },
         async searchItems() {
             try {
-                const { data } = await useFetch(`https://demo-backend-w1oh.onrender.com/api/books/?search=${this.searchTerm}`);
+                const { data } = await useFetch(`https://demo-backend-w1oh.onrender.com/api/books/page/${this.currentPage}?search=${this.searchTerm}`);
                 this.items = data;
                 this.paginatedItems();
             } catch (error) {
@@ -203,10 +213,38 @@ button:hover {
     border-radius: 3px;
     margin-bottom: 10px;
 }
-.pagination{
+
+.pagination {
     display: flex;
     justify-content: center;
     align-items: center;
 }
+
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.loader {
+  width: 48px;
+  height: 48px;
+  border: 5px solid #FFF;
+  border-bottom-color: #FF3D00;
+  border-radius: 50%;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 </style>
   

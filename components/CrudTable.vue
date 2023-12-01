@@ -10,20 +10,20 @@
           <tr>
             <th>ID</th>
             <th>Name</th>
-            <th>Description</th>
+            <th>Title</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
         <!-- Loop through paginated items -->
-        <tr v-for="item in paginatedItems" :key="item.id">
-          <td>{{ item.id }}</td>
+        <tr v-for="item in paginatedItems" :key="item.bookID">
+          <td>{{ item.bookID }}</td>
           <td>{{ item.name }}</td>
-          <td>{{ item.description }}</td>
+          <td>{{ item.title }}</td>
           <td>
             <!-- Edit and Delete buttons -->
-            <nuxt-link :to="`/books/${item.id}`" class="custom-link">Edit</nuxt-link>
-            <button @click="deleteItem(item.id)" class="delete-link" :disabled="isButtonDisabled">Delete</button>
+            <nuxt-link :to="`/books/${item.bookID}`" class="custom-link">Edit</nuxt-link>
+            <button @click="deleteItem(item.bookID)" class="delete-link" :disabled="isButtonDisabled">Delete</button>
           </td>
         </tr>
       </tbody>
@@ -40,6 +40,7 @@
   </template>
   
 <script>
+import axios from 'axios';
 export default {
     data() {
         return {
@@ -78,12 +79,11 @@ export default {
 
         async fetchDataAll() {
             try {
-                this.loading = true;
-                const { data } = await useFetch(`https://demo-backend-w1oh.onrender.com/api/books/`);
-                this.items = data;
-                this.loading = false;
+                const response = await axios.post(`http://localhost:8080/api/getBookAll`);
+                const data = response.data;
+
+                this.items = data.books;
             } catch (error) {
-                this.loading = false;
             }
         },
         editItem(id) {
@@ -93,17 +93,27 @@ export default {
             const deleteConfirmed = window.confirm('Are you sure you want to delete?');
             if (deleteConfirmed) {
                 try {
-                    this.isButtonDisabled = true;
-                    await useFetch(`https://demo-backend-w1oh.onrender.com/api/books/delete/${id}`);
+                    await axios.post(`http://localhost:8080/api/deleteBook/${id}`);
                     this.fetchDataAll();
                 } catch (error) {
+                    console.error(error);
                 }
             }
         },
         async searchItems() {
             try {
-                const { data } = await useFetch(`https://demo-backend-w1oh.onrender.com/api/books/?search=${this.searchTerm}`);
-                this.items = data;
+                if (this.searchTerm == "") {
+                    const response = await axios.post(`http://localhost:8080/api/getBookAll`);
+                    const data = response.data;
+
+                    this.items = data.books;
+                }
+                else {
+                    const response = await axios.post(`http://localhost:8080/api/searchBook/${this.searchTerm}/page/${this.currentPage}`);
+                    const data = response.data;
+
+                    this.items = data.books.content;
+                }
                 this.paginatedItems();
             } catch (error) {
             }
@@ -211,29 +221,29 @@ button:hover {
 }
 
 .loader-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .loader {
-  width: 48px;
-  height: 48px;
-  border: 5px solid #FFF;
-  border-bottom-color: #FF3D00;
-  border-radius: 50%;
-  box-sizing: border-box;
-  animation: rotation 1s linear infinite;
+    width: 48px;
+    height: 48px;
+    border: 5px solid #FFF;
+    border-bottom-color: #FF3D00;
+    border-radius: 50%;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
 }
 
 @keyframes rotation {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
+    0% {
+        transform: rotate(0deg);
+    }
 
+    100% {
+        transform: rotate(360deg);
+    }
+}
 </style>
   

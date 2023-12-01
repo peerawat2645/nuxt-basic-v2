@@ -8,9 +8,9 @@
         <span v-if="errorChecked && !editedItem.name" class="error-message">Please enter a name</span>
       </div>
       <div class="form-group">
-        <label for="description">Description:</label>
-        <input type="text" id="description" v-model="editedItem.description">
-        <span v-if="errorChecked && !editedItem.description" class="error-message">Please enter a description</span>
+        <label for="title">Title:</label>
+        <input type="text" id="title" v-model="editedItem.title">
+        <span v-if="errorChecked && !editedItem.title" class="error-message">Please enter a title</span>
       </div>
       <div class="form-group">
         <button type="submit" :disabled="isButtonDisabled">Update</button>
@@ -26,10 +26,9 @@ export default {
   data() {
     return {
       editedItem: {
-        id: null,
+        bookID: null,
         name: '',
-        description: '',
-        isButtonDisabled: false,
+        title: ''
       },
       errorChecked:false
     };
@@ -40,25 +39,27 @@ export default {
   },
   methods: {
     fetchBookDetails(bookId) {
-      axios.get(`https://demo-backend-w1oh.onrender.com/api/books/${bookId}`)
+      axios.post(`http://localhost:8080/api/findBook/${bookId}`)
         .then(response => {
-          this.editedItem = response.data;
-          this.editedItem.id = response.data.id;
+          this.editedItem = response.data.books[0];
+          this.editedItem.bookID = response.data.books[0].bookID;
         })
         .catch(error => {
+          console.error('Error fetching book details:', error);
         });
     },
     updateItem() {
-      if (!this.editedItem.name || !this.editedItem.description) {
+      if (!this.editedItem.name || !this.editedItem.title) {
         this.errorChecked = true;
+        console.error('Please fill in all fields');
       } else {
         this.errorChecked = false;
-        this.isButtonDisabled = true;
-        axios.post(`https://demo-backend-w1oh.onrender.com/api/books/update`, this.editedItem)
+        axios.post(`http://localhost:8080/api/updateBook`, this.editedItem)
           .then(response => {
             this.$router.push('/books');
           })
           .catch(error => {
+            console.error('Error updating book:', error);
           });
       }
     }

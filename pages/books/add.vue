@@ -28,7 +28,7 @@ export default {
       createdItem: {
         id: null,
         name: '',
-        description: ''
+        title: ''
       },
       errorChecked:false,
     };
@@ -37,21 +37,25 @@ export default {
   },
   methods: {
     createItem() {
-      if (!this.createdItem.name || !this.createdItem.description) {
+      if (!this.createdItem.name || !this.createdItem.title) {
         this.errorChecked=true;
+        console.error('Please fill in all fields');
+        // ไม่ส่งคำขอไปยัง API เนื่องจากข้อมูลไม่ครบถ้วน
       } else {
         this.errorChecked=false;
-        axios.post(`https://demo-backend-w1oh.onrender.com/api/books/create`, this.createdItem)
+        axios.post(`https://demo-jdbc.onrender.com/api/insertBook`, this.createdItem)
           .then(response => {
             this.$router.push('/books');
           })
           .catch(error => {
+            console.error('Error updating book:', error);
           });
       }
     }
   }
 };
 </script>
+
 
 <style scoped>
 .edit-container {

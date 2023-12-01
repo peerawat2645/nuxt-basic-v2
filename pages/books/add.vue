@@ -8,9 +8,9 @@
         <span v-if="errorChecked && !createdItem.name" class="error-message">Please enter a name</span>
       </div>
       <div class="form-group">
-        <label for="description">Description:</label>
-        <input type="text" id="description" v-model="createdItem.description">
-        <span v-if="errorChecked && !createdItem.description" class="error-message">Please enter a description</span>
+        <label for="title">Title:</label>
+        <input type="text" id="title" v-model="createdItem.title">
+        <span v-if="errorChecked && !createdItem.title" class="error-message">Please enter a title</span>
       </div>
       <div class="form-group">
         <button type="submit">Add</button>

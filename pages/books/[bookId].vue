@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     fetchBookDetails(bookId) {
-      axios.post(`http://localhost:8080/api/findBook/${bookId}`)
+      axios.post(`https://demo-jdbc.onrender.com/api/findBook/${bookId}`)
         .then(response => {
           this.editedItem = response.data.books[0];
           this.editedItem.bookID = response.data.books[0].bookID;
@@ -54,7 +54,7 @@ export default {
         console.error('Please fill in all fields');
       } else {
         this.errorChecked = false;
-        axios.post(`http://localhost:8080/api/updateBook`, this.editedItem)
+        axios.post(`https://demo-jdbc.onrender.com/api/updateBook`, this.editedItem)
           .then(response => {
             this.$router.push('/books');
           })

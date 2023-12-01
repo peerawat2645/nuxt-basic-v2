@@ -79,10 +79,12 @@ export default {
 
         async fetchDataAll() {
             try {
-                const response = await axios.post(`http://localhost:8080/api/getBookAll`);
+                this.loading = true;
+                const response = await axios.post(`https://demo-jdbc.onrender.com/api/getBookAll`);
                 const data = response.data;
 
                 this.items = data.books;
+                this.loading = false;
             } catch (error) {
             }
         },
@@ -93,7 +95,7 @@ export default {
             const deleteConfirmed = window.confirm('Are you sure you want to delete?');
             if (deleteConfirmed) {
                 try {
-                    await axios.post(`http://localhost:8080/api/deleteBook/${id}`);
+                    await axios.post(`https://demo-jdbc.onrender.com/api/deleteBook/${id}`);
                     this.fetchDataAll();
                 } catch (error) {
                     console.error(error);
@@ -103,13 +105,13 @@ export default {
         async searchItems() {
             try {
                 if (this.searchTerm == "") {
-                    const response = await axios.post(`http://localhost:8080/api/getBookAll`);
+                    const response = await axios.post(`https://demo-jdbc.onrender.com/api/getBookAll`);
                     const data = response.data;
 
                     this.items = data.books;
                 }
                 else {
-                    const response = await axios.post(`http://localhost:8080/api/searchBook/${this.searchTerm}/page/${this.currentPage}`);
+                    const response = await axios.post(`https://demo-jdbc.onrender.com/api/searchBook/${this.searchTerm}/page/${this.currentPage}`);
                     const data = response.data;
 
                     this.items = data.books.content;

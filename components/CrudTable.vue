@@ -8,7 +8,6 @@
       <table>
         <thead>
           <tr>
-            <th>ID</th>
             <th>Name</th>
             <th>Title</th>
             <th>Action</th>
@@ -17,7 +16,6 @@
         <tbody>
         <!-- Loop through paginated items -->
         <tr v-for="item in paginatedItems" :key="item.bookID">
-          <td>{{ item.bookID }}</td>
           <td>{{ item.name }}</td>
           <td>{{ item.title }}</td>
           <td>
